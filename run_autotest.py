@@ -36,7 +36,6 @@ async def main():
 
 
     autotest_app = await model.deploy(
-#        '/home/ubuntu/charms/layer-autotest/builds/autotest',
         'cs:~mreed8855/autotest-4',
         application_name='autotest',
         series='trusty',
