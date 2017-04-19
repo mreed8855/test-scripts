@@ -3,11 +3,9 @@
 This example:
 
 1. Connects to current model and resets it.
-2. Deploys an autotest  unit.
-3. Clones a custom client test repo which is set using a juju config option
-4. Runs an action against autotest, which is a custom action that runs
-   three test cases called sleeptest sleeptest1 and sleeptest2
-4. Waits for the action results to come back, then exits.
+2. Deploys an autotest unit.
+3. Runs actions against the unit.
+4. Waits for the actions results to come back, then exits.
 
 """
 import asyncio
@@ -17,9 +15,10 @@ from juju import loop
 from juju.model import Model
 
 MB = 1
-Testnames = ['sleeptest', 'sleeptest1', 'sleeptest2']
+Testnames = ['sleeptest','sleeptest1','sleeptest2']
 
-async def run_action(unit, test_name):
+
+async def run_action(unit, test_name=None):
     logging.debug('Running action on unit %s', unit.name)
 
     # unit.run() returns a juju.action.Action instance
@@ -37,10 +36,11 @@ async def main():
 
 
     autotest_app = await model.deploy(
-        '/home/ubuntu/charms/autotest/trusty/autotest',
+#        '/home/ubuntu/charms/layer-autotest/builds/autotest',
+        'cs:~mreed8855/autotest-4',
         application_name='autotest',
         series='trusty',
-#        channel='stable',
+        channel='edge',
     )
 
     await autotest_app.set_config({'autotest-custom-tests': 'https://github.com/mreed8855/custom-tests.git'})
